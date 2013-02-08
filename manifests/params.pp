@@ -7,7 +7,7 @@ class nss::params {
   $autoupgrade = false
   case $::lsbdistcodename {
     lucid: {
-      $nss_ldap_package = 'libnss-ldap'
+      $nss_ldap_package = 'libnss-ldapd'
     }
   }
 }
