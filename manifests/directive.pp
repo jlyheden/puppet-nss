@@ -29,21 +29,21 @@
 # Inspired by https://github.com/lermit/puppet-nss/blob/master/manifests/directive.pp
 # Johan Lyheden <johan.lyheden@artificial-solutions.com>
 #
-define nss::directive ( $database, $service, $ensure = 'present' ) {
+define nss::directive ( $database, $service, $ensure = 'present') {
   
   # input validation
   validate_re($database, $nss::params::valid_databases)
 
-  if $ensure == absent {
-    exec { "nss_${database}_${service}":
-      command => "sed 's/^\(${database}:.*\)${service}\(.*\)$/\1\2/g' ${nss::params::config_file}",
-      onlyif  => "grep '${database}' ${nss::params::config_file} | grep '${service}'",
+  if $ensure == 'absent' {
+    exec { "nss_remove_${database}_${service}":
+      command => "sed -i 's/^\\(${database}:.*\\)${service}\\(.*\\)$/\\1\\2/g' ${nss::params::config_file}",
+      onlyif  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
       path    => '/bin:/usr/bin:/sbin:/usr/sbin',
     }
   } else {
-    exec { "nss_${database}_${service}":
-      command => "sed -i 's/${database}:\(.*\)/${database}:\1 ${service}/g' ${nss::params::config_file}",
-      unless  => "grep '${database}' ${nss::params::config_file} | grep '${service}'",
+    exec { "nss_add_${database}_${service}":
+      command => "sed -i 's/^${database}:\\(.*\\)/${database}:\\1 ${service}/g' ${nss::params::config_file}",
+      unless  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
       path    => '/bin:/usr/bin:/sbin:/usr/sbin',
     }
   }
