@@ -1,6 +1,8 @@
 # == Class: nss::ldap
 #
 # Installs and enables NSS with LDAP support
+# This involves installing the nss-ldap package as well
+# as defining ldap as databases for the passwd, group and shadow services
 #
 # === Parameters
 #

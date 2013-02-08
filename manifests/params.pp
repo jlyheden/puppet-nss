@@ -3,7 +3,11 @@ class nss::params {
   $config_file = '/etc/nsswitch.conf'
   $template = undef
   $source = undef
-  $nss_ldap_package = 'libnss-ldap'
   $ensure = 'present'
   $autoupgrade = false
+  case $::lsbdistcodename {
+    lucid: {
+      $nss_ldap_package = 'libnss-ldap'
+    }
+  }
 }
