@@ -1,0 +1,28 @@
+{
+  "name": "artisol-nss",
+  "author": "Johan Lyheden",
+  "description": "",
+  "license": "",
+  "project_page": "",
+  "source": "",
+  "summary": "A Puppet module for managing NSS",
+  "version": "0.0.1",
+  "checksums": {
+    "Modulefile": "d68ac3bfd25a2e798b9c100edfc79b5c",
+    "README.markdown": "d3e69d8f8d7038576abbe746c775510f",
+    "Rakefile": "f37e6131fe7de9a49b09d31596f5fbf1",
+    "manifests/directive.pp": "c45f06f5ee699c3a6b55a1eae34867e6",
+    "manifests/init.pp": "890f6a0305565c974bf8af2009b14fb6",
+    "manifests/ldap.pp": "6c59a34df74bf1ca6b3ae0edbccba1f7",
+    "manifests/params.pp": "0d7d68ac81a39748782630adba26d14e",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+    "tests/init.pp": "315cb5c12126c22c0101c62e7876b71a"
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003d\u003d3.2.0"
+    }
+  ]
+}
