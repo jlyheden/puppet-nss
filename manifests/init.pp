@@ -1,9 +1,9 @@
 # == Class: nss
 #
-# This module manages nss of a Linux system
+# This module manages nss of a Linux system.
 # The Name Service System is a core feature in Linux and as such
-# is not installable, so by simply including this class will
-# do little good. Instead refer to the number of sub name spaced
+# is not installable, so by simply including this class using the defaults will
+# do next to nothing. Instead refer to the number of sub name spaced
 # classes such as nss::ldap or the define nss::directive
 #
 # === Parameters
@@ -16,6 +16,10 @@
 #   Path to ERB puppet template file to use
 #   Valid values: <tt>mymodule/path/to/file.conf.erb</tt>
 #
+# [*parameters*]
+#   Parameters to provide if using custom template
+#   Valid values: hash, ex:  <tt>{ 'option' => 'value' }</tt>
+#
 # === Requires: see Modulefile
 #
 # === Sample Usage
@@ -27,7 +31,8 @@
 # Johan Lyheden <johan.lyheden@artificial-solutions.com>
 #
 class nss ( $source = $nss::params::source,
-            $template = $nss::params::template ) inherits nss::params {
+            $template = $nss::params::template,
+            $parameters = {} ) inherits nss::params {
 
   $manage_file_source = $source ? {
     ''        => undef,
