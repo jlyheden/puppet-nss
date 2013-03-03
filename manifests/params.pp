@@ -17,6 +17,8 @@ class nss::params {
     'shadow'
   ]
 
+  $valid_ensure_values = [ 'present', 'absent', 'purged' ]
+
   $config_file = '/etc/nsswitch.conf'
   $template = ''
   $source = ''

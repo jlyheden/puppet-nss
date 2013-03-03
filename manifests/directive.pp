@@ -1,8 +1,13 @@
 # == Define: nss::directive
 #
-#   This ressource type define an entry into /etc/nsswitch.conf
-#   file. For example you can add ldap for group database into
-#   /etc/nsswitch.conf and ensure file isn't present.
+# This ressource type define an entry into /etc/nsswitch.conf
+# file. For example you can add ldap for group database into
+# /etc/nsswitch.conf and ensure file isn't present.
+#
+# The solution here has some drawbacks, for example it's not
+# possible to control order of the services declared in each
+# database. Complex setups should be controlled by managing
+# nsswitch.conf via the nss class
 #
 # === Parameters
 #
@@ -26,31 +31,31 @@
 #   service   => 'ldap'
 # }
 #
-# === Author
-#
-# Johan Lyheden <johan.lyheden@artificial-solutions.com>
-# Inspired by https://github.com/lermit/puppet-nss/blob/master/manifests/directive.pp
-#
-define nss::directive ( $database, $service, $ensure = 'present') {
-  
-  # input validation, however it should be technically impossible
-  # to insert any invalid database in the sed script
+define nss::directive (
+  $database,
+  $service,
+  $ensure = 'present'
+) {
+
+  include nss::params
+
+  # Input validation
   validate_re($database, $nss::params::valid_databases)
 
   case $ensure {
     absent: {
-	    exec { "nss_remove_${database}_${service}":
-	      command => "sed -i 's/^\\(${database}:.*\\)${service}\\(.*\\)$/\\1\\2/g' ${nss::params::config_file}",
-	      onlyif  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
-	      path    => '/bin:/usr/bin:/sbin:/usr/sbin',
-	    }
+      exec { "nss_remove_${database}_${service}":
+        command => "sed -i 's/^\\(${database}:.*\\)${service}\\(.*\\)$/\\1\\2/g' ${nss::params::config_file}",
+        onlyif  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+      }
     }
     present: {
-	    exec { "nss_add_${database}_${service}":
-	      command => "sed -i 's/^${database}:\\(.*\\)/${database}:\\1 ${service}/g' ${nss::params::config_file}",
-	      unless  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
-	      path    => '/bin:/usr/bin:/sbin:/usr/sbin',
-	    }
+      exec { "nss_add_${database}_${service}":
+        command => "sed -i 's/^${database}:\\(.*\\)/${database}:\\1 ${service}/g' ${nss::params::config_file}",
+        unless  => "grep '^${database}:' ${nss::params::config_file} | grep '${service}'",
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+      }
     }
     default: {
       fail("Unsupported ensure parameter value ${ensure}")
