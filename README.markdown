@@ -1,4 +1,5 @@
 # Module: nss
+[![Build Status](https://travis-ci.org/jlyheden/puppet-nss.png)](https://travis-ci.org/jlyheden/puppet-nss)
 
 This is the Puppet module for managing NSS - Name Service Switch
 Via NSS it's possible to control which data sources should be used
