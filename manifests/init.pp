@@ -4,51 +4,56 @@
 # The Name Service System is a core feature in Linux and as such
 # is not installable, so by simply including this class using the defaults will
 # do next to nothing. Instead refer to the number of sub name spaced
-# classes such as nss::ldap or the define nss::directive
+# classes such as nss::ldap or the define nss::directive unless you want
+# to fully manage nsswitch.conf via other means
 #
 # === Parameters
 #
 # [*source*]
-#   Path to static Puppet file to use
+#   Path to static Puppet file to use for nsswitch.conf
 #   Valid values: <tt>puppet:///modules/mymodule/path/to/file.conf</tt>
 #
-# [*template*]
-#   Path to ERB puppet template file to use
-#   Valid values: <tt>mymodule/path/to/file.conf.erb</tt>
-#
-# [*parameters*]
-#   Parameters to provide if using custom template
-#   Valid values: hash, ex:  <tt>{ 'option' => 'value' }</tt>
-#
-# === Requires: see Modulefile
+# [*content*]
+#   Content to use for nsswitch.conf
+#   Valid values: <tt>content</tt>
 #
 # === Sample Usage
 #
 # include nss
 #
-# === Author
-#
-# Johan Lyheden <johan.lyheden@artificial-solutions.com>
-#
-class nss ( $source = $nss::params::source,
-            $template = $nss::params::template,
-            $parameters = {} ) inherits nss::params {
+class nss (
+  $source   = $nss::params::source,
+  $content  = $nss::params::content
+) {
 
-  $manage_file_source = $source ? {
-    ''        => undef,
-    default   => $source,
+  include nss::params
+
+  $source_real = $source ? {
+    'UNDEF' => $nss::params::source,
+    default => $source
+  }
+  $content_real = $content ? {
+    'UNDEF' => $nss::params::content,
+    default => $content
   }
 
-  $manage_file_content = $template ? {
-    ''        => undef,
-    default   => template($template),
+  if $source_real != '' and $content_real != '' {
+    fail('Parameter source and content cannot be set at the same time.')
+  } elsif $source_real != '' {
+    File ['nsswitch/config'] {
+      source => $source_real
+    }
+  } else {
+    File ['nsswitch/config'] {
+      content => $content_real
+    }
   }
 
-  file { $nss::params::config_file:
+  file { 'nsswitch/config':
     ensure  => file,
+    path    => $nss::params::config_file,
     owner   => root,
     group   => root,
-    content => $manage_file_content,
-    source  => $manage_file_source
   }
+
 }
