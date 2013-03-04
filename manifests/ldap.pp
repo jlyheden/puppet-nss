@@ -23,6 +23,7 @@ class nss::ldap (
   $autoupgrade  = 'UNDEF'
 ) {
 
+  include nss
   include nss::params
 
   $ensure_real = $ensure ? {
