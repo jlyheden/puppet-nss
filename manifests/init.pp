@@ -46,7 +46,7 @@ class nss (
     File ['nsswitch/config'] {
       source => $source_real
     }
-  } else {
+  } elsif $content_real != '' {
     File ['nsswitch/config'] {
       content => $content_real
     }
