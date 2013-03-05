@@ -22,8 +22,8 @@
 # include nss
 #
 class nss (
-  $source   = $nss::params::source,
-  $content  = $nss::params::content
+  $source   = 'UNDEF',
+  $content  = 'UNDEF'
 ) {
 
   include nss::params
