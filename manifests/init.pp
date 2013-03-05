@@ -33,7 +33,10 @@ class nss (
     default => $source
   }
   $content_real = $content ? {
-    'UNDEF' => $nss::params::content,
+    'UNDEF' => $nss::params::template ? {
+      ''    => '',
+      default => template($nss::params::template)
+    },
     default => $content
   }
 
