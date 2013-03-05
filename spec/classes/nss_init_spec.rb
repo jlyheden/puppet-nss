@@ -12,10 +12,8 @@ describe 'nss' do
       'ensure'    => 'file',
       'owner'     => 'root',
       'group'     => 'root',
-      'source'    => nil,
-      'content'   => nil,
       'path'      => '/etc/nsswitch.conf'
-    ) end
+    ).without(['source','content']) end
   end
 
   context 'with source => puppet:///modules/mymodule/myfile' do
