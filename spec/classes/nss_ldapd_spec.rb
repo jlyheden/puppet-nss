@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nss::ldap' do
+describe 'nss::ldapd' do
 
   # set depending facts
   let (:facts) { {
@@ -8,27 +8,27 @@ describe 'nss::ldap' do
   } } 
 
   context 'with default params' do
-    it do should contain_package('nss_ldap').with(
+    it do should contain_package('nss_ldapd').with(
       'ensure'  => 'present',
-      'name'    => 'libnss-ldap'
+      'name'    => 'libnss-ldapd'
     ) end
     it do should contain_nss__directive('passwd_ldap').with(
       'ensure'    => 'present',
       'service'   => 'ldap',
       'database'  => 'passwd',
-      'require'   => 'Package[nss_ldap]'
+      'require'   => 'Package[nss_ldapd]'
     ) end
     it do should contain_nss__directive('group_ldap').with(
       'ensure'    => 'present',
       'service'   => 'ldap',
       'database'  => 'group',
-      'require'   => 'Package[nss_ldap]'
+      'require'   => 'Package[nss_ldapd]'
     ) end
     it do should contain_nss__directive('shadow_ldap').with(
       'ensure'    => 'present',
       'service'   => 'ldap',
       'database'  => 'shadow',
-      'require'   => 'Package[nss_ldap]'
+      'require'   => 'Package[nss_ldapd]'
     ) end 
   end
 
@@ -36,7 +36,7 @@ describe 'nss::ldap' do
     let (:params) { {
       :autoupgrade  => true
     } }
-    it do should contain_package('nss_ldap').with(
+    it do should contain_package('nss_ldapd').with(
       'ensure'  => 'latest'
     ) end
   end

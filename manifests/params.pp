@@ -27,7 +27,8 @@ class nss::params {
 
   case $::operatingsystem {
     'Ubuntu','Debian': {
-      $nss_ldap_package = 'libnss-ldapd'
+      $nss_ldap_package = 'libnss-ldap'
+      $nss_ldapd_package = 'libnss-ldapd'
     }
     default: {
       fail ("Unsupported operatingsystem ${::operatingsystem}")
